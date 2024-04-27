@@ -1,4 +1,5 @@
 global using UserManagementSystem.Models;
+using UserManagementSystem;
 using UserManagementSystem.Data;
 using UserManagementSystem.Services;
 
@@ -23,6 +24,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Welcome
+app.MapGet("/", () =>
+{
+    return "Bem-vindo ao INDT challenge api!";
+})
+.WithName("GetWelcomeRoute").WithOpenApi();
 
 app.UseHttpsRedirection();
 
