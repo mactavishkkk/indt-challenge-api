@@ -1,4 +1,5 @@
 ﻿using UserManagementSystem.Data;
+using UserManagementSystem.Services.Exceptions;
 
 namespace UserManagementSystem.Services
 {
@@ -13,55 +14,79 @@ namespace UserManagementSystem.Services
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            var users = await _dbContext.User.ToListAsync();
-            return users;
+            try
+            {
+                var users = await _dbContext.User.ToListAsync();
+                return users;
+            } catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public async Task<User?> GetSingleUserAsync(int id)
         {
-            var user = await _dbContext.User.FindAsync(id);
-            if (user is null)
+            try
             {
-                return null;
+                var user = await _dbContext.User.FindAsync(id);
+                return user;
+
+            } catch (NotFoundException e)
+            {
+                throw new NotFoundException(e.Message);
             }
-            return user;
         }
 
-        public async Task<User?> CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            _dbContext.User.Add(user);
-            await _dbContext.SaveChangesAsync();
-            return user;
+            try
+            {
+                _dbContext.User.Add(user);
+                await _dbContext.SaveChangesAsync();
+
+                return user;
+            } catch (NotFoundException e)
+            {
+                throw new NotFoundException(e.Message);
+            }
         }
 
         public async Task<User?> UpdateUserAsync(int id, User request)
         {
-            var user = await _dbContext.User.FindAsync(id);
-            if (user is null)
+            try
             {
-                return null;
+                var user = await _dbContext.User.FindAsync(id);
+
+                user.FirstName = request.FirstName;
+                user.LastName = request.LastName;
+                user.Email = request.Email;
+                user.Password = request.Password;
+
+                await _dbContext.SaveChangesAsync();
+
+                return user;
+            } catch (NotFoundException e)
+            {
+                throw new NotFoundException(e.Message);
+            } catch (DbConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
             }
-
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
-            user.Email = request.Email;
-            user.Password = request.Password;
-
-            await _dbContext.SaveChangesAsync();
-            return user;
         }
         public async Task<User?> DeleteUserAsync(int id)
         {
-            var user = await _dbContext.User.FindAsync(id);
-            if (user is null)
+            try
             {
-                return null;
+                var user = await _dbContext.User.FindAsync(id);
+                _dbContext.User.Remove(user);
+
+                await _dbContext.SaveChangesAsync();
+
+                return user;
+            } catch (NotFoundException e)
+            {
+                throw new NotFoundException(e.Message);
             }
-
-            _dbContext.User.Remove(user);
-            await _dbContext.SaveChangesAsync();
-
-            return user;
         }
     }
 }
