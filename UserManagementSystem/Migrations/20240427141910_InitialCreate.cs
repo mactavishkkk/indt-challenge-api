@@ -22,6 +22,7 @@ namespace UserManagementSystem.Migrations
                     lastname = table.Column<string>(name: "last_name", type: "character varying(50)", maxLength: 50, nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     password = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    status = table.Column<bool>(type: "boolean", nullable: false),
                     isadmin = table.Column<bool>(name: "is_admin", type: "boolean", nullable: false),
                     createdat = table.Column<DateTime>(name: "created_at", type: "timestamp with time zone", nullable: false),
                     updatedat = table.Column<DateTime>(name: "updated_at", type: "timestamp with time zone", nullable: false)

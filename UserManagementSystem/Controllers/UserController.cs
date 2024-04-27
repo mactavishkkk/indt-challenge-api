@@ -46,10 +46,6 @@ namespace UserManagementSystem.Controllers
         public async Task<ActionResult<User>> UpdateUserAsync(int id, User request)
         {
             var result = await _userService.UpdateUserAsync(id, request);
-            if (result is null)
-            {
-                return NotFound("Something went wrong");
-            }
             return Ok(result);
         }
 
@@ -57,9 +53,6 @@ namespace UserManagementSystem.Controllers
         public async Task<ActionResult<User>> DeleteUserAsync(int id)
         {
             var result = await _userService.DeleteUserAsync(id);
-            if (result is null)
-                return NotFound("Something went wrong");
-
             return Ok(result);
         }
     }

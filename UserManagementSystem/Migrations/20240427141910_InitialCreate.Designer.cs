@@ -12,7 +12,7 @@ using UserManagementSystem.Data;
 namespace UserManagementSystem.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240427064323_InitialCreate")]
+    [Migration("20240427141910_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,6 +65,10 @@ namespace UserManagementSystem.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("password");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("boolean")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
