@@ -1,3 +1,7 @@
+global using UserManagementSystem.Models;
+using UserManagementSystem.Data;
+using UserManagementSystem.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add other services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 
