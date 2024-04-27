@@ -1,39 +1,25 @@
-﻿namespace UserManagementSystem.Services
+﻿using UserManagementSystem.Data;
+
+namespace UserManagementSystem.Services
 {
     public class UserService : IUserService
     {
-        private static List<User> users = new List<User>
-        {
-            new User {
-                Id = 1,
-                FirstName = "Isaías",
-                LastName = "Leite",
-                Email = "isaias@gmail.com",
-                Password = "123",
-                IsAdmin = true,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-            },
-            new User {
-                Id = 2,
-                FirstName = "Gabriela",
-                LastName = "One",
-                Email = "gabi@gmail.com",
-                Password = "456",
-                IsAdmin = false,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-            }
-        };
+        private readonly DataContext _dbContext;
 
-        public List<User> GetAllUsersAsync()
+        public UserService(DataContext dbContext)
         {
+            _dbContext = dbContext;
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            var users = await _dbContext.User.ToListAsync();
             return users;
         }
 
-        public User GetSingleUserAsync(int id)
+        public async Task<User?> GetSingleUserAsync(int id)
         {
-            var user = users.Find(x => x.Id == id);
+            var user = await _dbContext.User.FindAsync(id);
             if (user is null)
             {
                 return null;
@@ -41,34 +27,40 @@
             return user;
         }
 
-        public User CreateUserAsync(User user)
+        public async Task<User?> CreateUserAsync(User user)
         {
-            users.Add(user);
+            _dbContext.User.Add(user);
+            await _dbContext.SaveChangesAsync();
             return user;
         }
 
-        public User UpdateUserAsync(int id, User request)
+        public async Task<User?> UpdateUserAsync(int id, User request)
         {
-            var user = users.Find(x => x.Id == id);
+            var user = await _dbContext.User.FindAsync(id);
             if (user is null)
             {
                 return null;
             }
+
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.Email = request.Email;
             user.Password = request.Password;
 
+            await _dbContext.SaveChangesAsync();
             return user;
         }
-        public User DeleteUserAsync(int id)
+        public async Task<User?> DeleteUserAsync(int id)
         {
-            var user = users.Find(x => x.Id == id);
+            var user = await _dbContext.User.FindAsync(id);
             if (user is null)
             {
                 return null;
             }
-            users.Remove(user);
+
+            _dbContext.User.Remove(user);
+            await _dbContext.SaveChangesAsync();
+
             return user;
         }
     }

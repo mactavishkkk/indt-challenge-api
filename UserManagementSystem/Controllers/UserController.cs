@@ -21,13 +21,13 @@ namespace UserManagementSystem.Controllers
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsersAsync()
         {
-            return _userService.GetAllUsersAsync();
+            return await _userService.GetAllUsersAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetSingleUserAsync(int id)
         {
-            var result = _userService.GetSingleUserAsync(id);
+            var result = await _userService.GetSingleUserAsync(id);
             if (result is null)
             {
                 return NotFound("Something went wrong");
@@ -38,14 +38,14 @@ namespace UserManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> CreateUserAsync(User user)
         {
-            var result = _userService.CreateUserAsync(user);
+            var result = await _userService.CreateUserAsync(user);
             return Ok(user);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<User>> UpdateUserAsync(int id, User request)
         {
-            var result = _userService.UpdateUserAsync(id, request);
+            var result = await _userService.UpdateUserAsync(id, request);
             if (result is null)
             {
                 return NotFound("Something went wrong");
@@ -56,7 +56,7 @@ namespace UserManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> DeleteUserAsync(int id)
         {
-            var result = _userService.DeleteUserAsync(id);
+            var result = await _userService.DeleteUserAsync(id);
             if (result is null)
                 return NotFound("Something went wrong");
 

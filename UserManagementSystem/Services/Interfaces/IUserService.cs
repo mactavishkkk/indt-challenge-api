@@ -2,10 +2,10 @@
 {
     public interface IUserService
     {
-        List<User> GetAllUsersAsync();
-        User GetSingleUserAsync(int id);
-        User CreateUserAsync(User user);
-        User UpdateUserAsync(int id, User request);
-        User DeleteUserAsync(int id);
+        Task<List<User>> GetAllUsersAsync();
+        Task<User?> GetSingleUserAsync(int id);
+        Task<User> CreateUserAsync(User user);
+        Task<User?> UpdateUserAsync(int id, User request);
+        Task<User?> DeleteUserAsync(int id);
     }
 }

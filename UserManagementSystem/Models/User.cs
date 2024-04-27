@@ -5,6 +5,7 @@ namespace UserManagementSystem.Models
 {
     public class User
     {
+        [Column("id")]
         public int Id { get; set; }
 
         [Required]
@@ -20,10 +21,12 @@ namespace UserManagementSystem.Models
         [Required]
         [StringLength(100)]
         [EmailAddress]
+        [Column("email")]
         public string Email { get; set; } = string.Empty;
 
         [Required]
         [StringLength(100, MinimumLength = 6)]
+        [Column("password")]
         public string Password { get; set; } = string.Empty;
 
         [Required]
