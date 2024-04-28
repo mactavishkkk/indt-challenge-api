@@ -61,6 +61,7 @@ namespace UserManagementSystem.Services
                 user.LastName = request.LastName;
                 user.Email = request.Email;
                 user.Password = request.Password;
+                user.UpdatedAt = DateTime.UtcNow;
 
                 await _dbContext.SaveChangesAsync();
 
@@ -73,6 +74,7 @@ namespace UserManagementSystem.Services
                 throw new DbConcurrencyException(e.Message);
             }
         }
+
         public async Task<User?> DeleteUserAsync(int id)
         {
             try
@@ -86,6 +88,26 @@ namespace UserManagementSystem.Services
             } catch (NotFoundException e)
             {
                 throw new NotFoundException(e.Message);
+            }
+        }
+
+        public async Task<User?> ChangeStatusAsync(int id)
+        {
+            try
+            {
+                var user = await _dbContext.User.FindAsync(id);
+
+                user.Status = !user.Status;
+                user.UpdatedAt = DateTime.UtcNow;
+                await _dbContext.SaveChangesAsync();
+
+                return user;
+            } catch (NotFoundException e)
+            {
+                throw new NotFoundException(e.Message);
+            } catch (DbConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace UsermanagementSystem.Tests.Controller
         private readonly User userObject = new User
         {
             Id = 1, FirstName = "test", LastName = "unix", Email = "test@gmail.com",
-            Password = "123", IsAdmin = false, Status = false, CreatedAt = DateTime.Today, UpdatedAt = DateTime.Today
+            Password = "123", IsAdmin = false, Status = false, CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow
         };
 
         public UserControllerTest()

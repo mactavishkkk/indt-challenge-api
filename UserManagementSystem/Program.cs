@@ -15,8 +15,23 @@ builder.Services.AddSwaggerGen();
 // Add other services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddScoped<UserSeedingService>();
 
 var app = builder.Build();
+
+// Seeding to database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var seedingService = services.GetRequiredService<UserSeedingService>();
+        seedingService.Seed();
+    } catch (Exception ex)
+    {
+        throw new Exception(ex.Message);
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

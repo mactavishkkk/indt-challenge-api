@@ -55,5 +55,12 @@ namespace UserManagementSystem.Controllers
             var result = await _userService.DeleteUserAsync(id);
             return Ok(result);
         }
+
+        [HttpPut("ChangeStatus/{id}")]
+        public async Task<ActionResult<User>> ChangeStatusAsync(int id)
+        {
+            var result = await _userService.ChangeStatusAsync(id);
+            return Ok(result);
+        }
     }
 }
