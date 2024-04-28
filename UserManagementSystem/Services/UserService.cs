@@ -41,6 +41,8 @@ namespace UserManagementSystem.Services
         {
             try
             {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
                 _dbContext.User.Add(user);
                 await _dbContext.SaveChangesAsync();
 
@@ -56,13 +58,14 @@ namespace UserManagementSystem.Services
             try
             {
                 var user = await _dbContext.User.FindAsync(id);
-
-                user.FirstName = request.FirstName;
-                user.LastName = request.LastName;
-                user.Email = request.Email;
-                user.Password = request.Password;
-                user.UpdatedAt = DateTime.UtcNow;
-
+                if (user is not null)
+                {
+                    user.FirstName = request.FirstName;
+                    user.LastName = request.LastName;
+                    user.Email = request.Email;
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+                    user.UpdatedAt = DateTime.UtcNow;
+                }
                 await _dbContext.SaveChangesAsync();
 
                 return user;
@@ -80,7 +83,10 @@ namespace UserManagementSystem.Services
             try
             {
                 var user = await _dbContext.User.FindAsync(id);
-                _dbContext.User.Remove(user);
+                if (user is not null)
+                {
+                    _dbContext.User.Remove(user);
+                }
 
                 await _dbContext.SaveChangesAsync();
 
@@ -96,9 +102,11 @@ namespace UserManagementSystem.Services
             try
             {
                 var user = await _dbContext.User.FindAsync(id);
-
-                user.Status = !user.Status;
-                user.UpdatedAt = DateTime.UtcNow;
+                if (user is not null)
+                {
+                    user.Status = !user.Status;
+                    user.UpdatedAt = DateTime.UtcNow;
+                }
                 await _dbContext.SaveChangesAsync();
 
                 return user;

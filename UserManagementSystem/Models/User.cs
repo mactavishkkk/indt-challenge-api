@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace UserManagementSystem.Models
 {
     public class User
     {
+        [JsonIgnore]
         [Column("id")]
         public int Id { get; set; }
 
