@@ -9,6 +9,6 @@ namespace UserManagementSystem.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Port=5464;Host=localhost;Database=ums-db;Username=postgres;Password=postgres");
+            => optionsBuilder.UseNpgsql("Port=5464;Host=host.docker.internal;Database=ums-db;Username=postgres;Password=postgres");
     }
 }
