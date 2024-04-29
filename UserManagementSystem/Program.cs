@@ -24,6 +24,7 @@ builder.Services.AddSwaggerGen(options =>
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -34,6 +35,13 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             builder.Configuration.GetSection("AppSettings:Token").Value!))
     };
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy => {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
 });
 
 // Add other services
@@ -54,7 +62,8 @@ using (var scope = app.Services.CreateScope())
 
         context.Database.Migrate();
         seedingService.Seed();
-    } catch (Exception ex)
+    }
+    catch (Exception ex)
     {
         throw new Exception(ex.Message);
     }
@@ -73,6 +82,8 @@ app.MapGet("/", () =>
     return "Bem-vindo ao INDT challenge api!";
 })
 .WithName("GetWelcomeRoute").WithOpenApi();
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
