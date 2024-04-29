@@ -28,18 +28,24 @@ git clone https://github.com/mactavishkkk/indt-challenge-api.git
 cd indt-challenge-api/UserManagementSystem/docker
 ```
 
-3. Construa os ambientes com docker, no terminal use:
+3. Construa as imagens para os ambientes com docker, no terminal use:
 
 ```bash
-docker compose up --build || docker-compose up --build
+docker compose build
 ```
 
-4. Pronto, agora você já poderá acessar a rota de boas vindas em seu navegador:
+4. Agora basta subir elas com:
 
 ```bash
-https://localhost:7078/
+docker compose up - d
+```
+
+5. Pronto, agora você já poderá acessar a rota de boas vindas em seu navegador:
+
+```bash
+https://localhost:8088/
 ```
 
 ## Documentação da API
 
-A documentação da API pode ser encontrada em `https://localhost:7078/swagger/index.html`, onde você pode encontrar informações sobre os endpoints disponíveis, parâmetros de solicitação, respostas e exemplos de uso.
+A documentação da API pode ser encontrada em `http://localhost:8088/swagger/index.html`, onde você pode encontrar informações sobre os endpoints disponíveis, parâmetros de solicitação, respostas e exemplos de uso.

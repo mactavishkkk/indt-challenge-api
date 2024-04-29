@@ -6,7 +6,6 @@ namespace UserManagementSystem.Models
 {
     public class User
     {
-        [JsonIgnore]
         [Column("id")]
         public int Id { get; set; }
 

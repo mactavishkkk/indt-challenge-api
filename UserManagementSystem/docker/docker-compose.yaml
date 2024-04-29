@@ -6,7 +6,8 @@ services:
   usermanagement-app:
     image: docker.io/library/usermanagement
     depends_on:
-      - "app-db"
+      - app-db
+
     container_name: docker-ums
     ports:
       - "8088:80"

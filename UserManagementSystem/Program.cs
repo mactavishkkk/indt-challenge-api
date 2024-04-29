@@ -50,6 +50,9 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var seedingService = services.GetRequiredService<UserSeedingService>();
+        var context = services.GetRequiredService<DataContext>();
+
+        context.Database.Migrate();
         seedingService.Seed();
     } catch (Exception ex)
     {

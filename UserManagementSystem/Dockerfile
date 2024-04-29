@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build 
+ENV ASPNETCORE_ENVIRONMENT=Development
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -13,4 +14,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app 
 COPY --from=build /app/out ./ 
 
-ENTRYPOINT [ "dotnet" , "UserManagementSystem.dll" ]
+ENTRYPOINT [ "dotnet" , "UserManagementSystem.dll", "--environment=Development" ]
