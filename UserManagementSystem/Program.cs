@@ -43,7 +43,7 @@ builder.Services.AddScoped<UserSeedingService>();
 
 var app = builder.Build();
 
-// Seeding to database
+// migrate and seeds, to database
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
