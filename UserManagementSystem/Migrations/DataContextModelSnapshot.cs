@@ -63,6 +63,10 @@ namespace UserManagementSystem.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("password");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("boolean")
+                        .HasColumnName("status");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");

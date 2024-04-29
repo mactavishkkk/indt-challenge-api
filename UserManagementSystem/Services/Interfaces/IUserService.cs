@@ -7,5 +7,6 @@
         Task<User> CreateUserAsync(User user);
         Task<User?> UpdateUserAsync(int id, User request);
         Task<User?> DeleteUserAsync(int id);
+        Task<User?> ChangeStatusAsync(int id);
     }
 }

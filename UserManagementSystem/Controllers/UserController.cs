@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UserManagementSystem.Models;
 using UserManagementSystem.Services;
 
 namespace UserManagementSystem.Controllers
 {
     [Route("api/v1/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
 
     public class UserController : ControllerBase
     {
@@ -30,7 +29,7 @@ namespace UserManagementSystem.Controllers
             var result = await _userService.GetSingleUserAsync(id);
             if (result is null)
             {
-                return NotFound("Something went wrong");
+                return NotFound("Algo deu errado: GetSingleUserAsync();");
             }
             return Ok(result);
         }
@@ -39,7 +38,11 @@ namespace UserManagementSystem.Controllers
         public async Task<ActionResult<User>> CreateUserAsync(User user)
         {
             var result = await _userService.CreateUserAsync(user);
-            return Ok(user);
+            if (result is null)
+            {
+                return NotFound("Algo deu errado: CreateUserAsync();");
+            }
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -48,7 +51,7 @@ namespace UserManagementSystem.Controllers
             var result = await _userService.UpdateUserAsync(id, request);
             if (result is null)
             {
-                return NotFound("Something went wrong");
+                return NotFound("Algo deu errado: UpdateUserAsync();");
             }
             return Ok(result);
         }
@@ -58,8 +61,20 @@ namespace UserManagementSystem.Controllers
         {
             var result = await _userService.DeleteUserAsync(id);
             if (result is null)
-                return NotFound("Something went wrong");
+            {
+                return NotFound("Algo deu errado: DeleteUserAsync();");
+            }
+            return Ok(result);
+        }
 
+        [HttpPut("ChangeStatus/{id}")]
+        public async Task<ActionResult<User>> ChangeStatusAsync(int id)
+        {
+            var result = await _userService.ChangeStatusAsync(id);
+            if (result is null)
+            {
+                return NotFound("Algo deu errado: ChangeStatusAsync();");
+            }
             return Ok(result);
         }
     }

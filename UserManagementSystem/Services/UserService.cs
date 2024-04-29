@@ -41,6 +41,8 @@ namespace UserManagementSystem.Services
         {
             try
             {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
                 _dbContext.User.Add(user);
                 await _dbContext.SaveChangesAsync();
 
@@ -56,12 +58,14 @@ namespace UserManagementSystem.Services
             try
             {
                 var user = await _dbContext.User.FindAsync(id);
-
-                user.FirstName = request.FirstName;
-                user.LastName = request.LastName;
-                user.Email = request.Email;
-                user.Password = request.Password;
-
+                if (user is not null)
+                {
+                    user.FirstName = request.FirstName;
+                    user.LastName = request.LastName;
+                    user.Email = request.Email;
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
+                    user.UpdatedAt = DateTime.UtcNow;
+                }
                 await _dbContext.SaveChangesAsync();
 
                 return user;
@@ -73,12 +77,16 @@ namespace UserManagementSystem.Services
                 throw new DbConcurrencyException(e.Message);
             }
         }
+
         public async Task<User?> DeleteUserAsync(int id)
         {
             try
             {
                 var user = await _dbContext.User.FindAsync(id);
-                _dbContext.User.Remove(user);
+                if (user is not null)
+                {
+                    _dbContext.User.Remove(user);
+                }
 
                 await _dbContext.SaveChangesAsync();
 
@@ -86,6 +94,28 @@ namespace UserManagementSystem.Services
             } catch (NotFoundException e)
             {
                 throw new NotFoundException(e.Message);
+            }
+        }
+
+        public async Task<User?> ChangeStatusAsync(int id)
+        {
+            try
+            {
+                var user = await _dbContext.User.FindAsync(id);
+                if (user is not null)
+                {
+                    user.Status = !user.Status;
+                    user.UpdatedAt = DateTime.UtcNow;
+                }
+                await _dbContext.SaveChangesAsync();
+
+                return user;
+            } catch (NotFoundException e)
+            {
+                throw new NotFoundException(e.Message);
+            } catch (DbConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
             }
         }
     }
